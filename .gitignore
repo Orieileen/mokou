@@ -1,0 +1,89 @@
+# 环境变量和敏感信息
+.env
+.env.local
+.env.production
+.env.staging
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Python 相关
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 虚拟环境
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Django 相关
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/
+
+# IDE 文件
+.vscode/
+.cursor/
+.idea/
+*.swp
+*.swo
+*~
+
+# 数据库
+*.db
+*.sqlite
+*.sqlite3
+
+# 缓存
+.cache/
+.pytest_cache/
+.ruff_cache/
+
+# 测试覆盖率
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+
+# 日志文件
+*.log
+logs/
+
+# 本地配置
+local_settings.py
+config/promts/

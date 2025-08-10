@@ -1,0 +1,16 @@
+# requirements.txt
+django
+djangorestframework
+djoser
+mysqlclient
+celery
+redis
+openai
+requests
+Pillow
+python-dotenv
+opencv-python
+numpy
+dj-database-url
+gunicorn
+opencv-python-headless

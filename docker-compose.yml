@@ -1,0 +1,75 @@
+# docker-compose.yml
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mokou_db
+    env_file: ./.env
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - mokou_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: mokou_redis
+    networks:
+      - mokou_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  web:
+    build: .
+    container_name: mokou_web
+    env_file: ./.env
+    # 这是项目创建好之后，用于开发的主命令
+    command: sleep infinity
+    volumes:
+      - .:/app
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    networks:
+      - mokou_network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+
+  worker:
+    build: .
+    container_name: mokou_worker
+    env_file: ./.env
+    command: sleep infinity
+    volumes:
+      - .:/app
+    networks:
+      - mokou_network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  mysql_data: {}
+  media_volume: {}
+
+networks:
+  mokou_network:
+    driver: bridge
