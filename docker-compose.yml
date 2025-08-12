@@ -31,13 +31,15 @@ services:
     restart: always
 
   web:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: mokou_web
     env_file: ./.env
     # 这是项目创建好之后，用于开发的主命令
     command: sleep infinity
     volumes:
-      - .:/app
+      - ./backend:/app
       - media_volume:/app/media
     ports:
       - "8000:8000"
@@ -51,12 +53,14 @@ services:
     restart: always
 
   worker:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: mokou_worker
     env_file: ./.env
     command: sleep infinity
     volumes:
-      - .:/app
+      - ./backend:/app
     networks:
       - mokou_network
     depends_on:
@@ -65,6 +69,22 @@ services:
       redis:
         condition: service_healthy
     restart: always
+
+  frontend:
+    build:
+      context: ./frontend  # 假设你的前端代码将位于 ./frontend 文件夹中
+      dockerfile: Dockerfile
+    container_name: mokou_frontend
+    ports:
+      - "5173:5173"      # 将容器的 5173 端口映射到你电脑的 5173 端口
+    volumes:
+      - ./frontend:/app  # 将本地的前端代码挂载到容器中，以实现热更新
+      - /app/node_modules # 一个重要技巧: 防止本地的 node_modules 覆盖容器中已安装的
+    networks:
+      - mokou_network
+    restart: always
+    command: npm run dev -- --host # 运行 Vite 开发服务器，并允许外部访问
+
 
 volumes:
   mysql_data: {}
